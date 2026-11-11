@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#061b45">
+    <title>MEMORY CARD GAME PH V1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <section id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">SCXR</div>
+            <h1>MEMORY CARD<br>GAME PH V1</h1>
+            <p>MEMORY MATCHING GAME</p>
+            <div class="loading-line"><span></span></div>
+            <small>DEVELOPED BY</small>
+            <h3>JOHN IVAN CADACIO</h3>
+            <button class="primary-btn" id="enterGameBtn">START TO PLAY</button>
+        </div>
+    </section>
+
+    <header class="top-bar">
+        <div class="brand">🇵🇭 MEMORY CARD GAME V1</div>
+        <div class="player-stats">
+            <div class="stat">🏅 <span id="rank">Beginners</span></div>
+            <div class="stat">🪙 <span id="coins">0</span></div>
+            <div class="stat">💎 <span id="diamonds">0</span></div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- MAIN MENU -->
+        <section id="mainMenu" class="screen">
+            <div class="mobile-panel home-panel">
+                <div class="home-emblem">🃏</div>
+                <h1>MEMORY CARD<br>GAME V1</h1>
+                <p class="muted">MATCH THE PAIRS. TEST YOUR MEMORY.</p>
+
+                <div class="section-label">START MO DAMI MO ALAM</div>
+
+                <button class="primary-btn large-btn" onclick="selectMode('rank')">
+                    🏆 RANK GAME
+                    <small>Compete and climb the ranks</small>
+                </button>
+
+                <button class="secondary-btn large-btn" onclick="selectMode('classic')">
+                    🎮 CLASSIC GAME
+                    <small>Play without rank points</small>
+                </button>
+
+                <div class="home-options">
+                    <button class="option-btn" onclick="openShop()">
+                        <span>🛒</span> TINDAHAN
+                    </button>
+                    <button class="option-btn" onclick="openSettings()">
+                        <span>⚙️</span> SETTINGS
+                    </button>
+                </div>
+
+                <button class="claim-btn" onclick="claimDiamonds()">
+                    💎 50 CLAIM HOURLY DIAMOND 
+                </button>
+                <p id="claimMessage" class="small-message"></p>
+            </div>
+        </section>
+
+        <!-- CATEGORY -->
+        <section id="categoryMenu" class="screen">
+            <div class="mobile-panel">
+                <button class="back-btn" onclick="showScreen('mainMenu')">← BACK</button>
+
+                <div class="mode-label" id="modeLabel">RANK GAME</div>
+                <h2>SELECT CATEGORY</h2>
+                <p class="muted">Choose your matching challenge.</p>
+
+                <div class="category-grid">
+                    <button class="category-btn" onclick="selectCategory('president')">
+                        <span>👑</span>
+                        PRESIDENTS
+                    </button>
+                    <button class="category-btn" onclick="selectCategory('animals')">
+                        <span>🐯</span>
+                        ANIMALS
+                    </button>
+                    <button class="category-btn" onclick="selectCategory('flags')">
+                        <span>🌎</span>
+                        FLAGS
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIFFICULTY -->
+        <section id="difficultyMenu" class="screen">
+            <div class="mobile-panel">
+                <button class="back-btn" onclick="showScreen('categoryMenu')">← BACK</button>
+                <h2>SELECT DIFFICULTY</h2>
+                <p id="selectedCategory" class="muted"></p>
+
+                <div class="difficulty-list">
+                    <button onclick="startGame('easy')">
+                        <span>EASY</span>
+                        <small>8 Cards · 4 Pairs · 15 Seconds</small>
+                        <small class="points-label">Rank: +50 / -25</small>
+                    </button>
+
+                    <button onclick="startGame('medium')">
+                        <span>MEDIUM</span>
+                        <small>12 Cards · 6 Pairs · 35 Seconds</small>
+                        <small class="points-label">Rank: +100 / -50</small>
+                    </button>
+
+                    <button onclick="startGame('hard')">
+                        <span>HARD</span>
+                        <small>16 Cards · 8 Pairs · 50 Seconds</small>
+                        <small class="points-label">Rank: +200  +20💎Diamonds / -100</small>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME -->
+        <section id="gameScreen" class="screen">
+            <div class="mobile-panel game-panel">
+                <div class="game-top">
+                    <button class="back-btn" onclick="quitGame()">✕ QUIT</button>
+                    <div class="mode-label" id="gameMode">RANK GAME</div>
+                </div>
+
+                <h2 id="gameCategory">CATEGORY</h2>
+                <p id="gameDifficulty" class="muted">EASY</p>
+
+                <div class="game-info">
+                    <div class="timer-card">
+                        <small>TIME LEFT</small>
+                        <strong>⏱ <span id="timer">10</span>s</strong>
+                    </div>
+                    <div class="timer-card">
+                        <small>MATCHED PAIRS</small>
+                        <strong><span id="matches">0</span>/<span id="totalPairs">4</span></strong>
+                    </div>
+                </div>
+
+                <div class="hint-area">
+                    <span>💡 Hints: <b id="hintCount">0</b></span>
+                    <button class="hint-btn" id="useHintBtn" onclick="useHint()">USE HINT</button>
+                </div>
+
+                <div id="gameBoard" class="game-board"></div>
+                <p id="gameStatus" class="game-tip">Find two identical pictures!</p>
+            </div>
+        </section>
+
+        <!-- RESULT -->
+        <section id="resultScreen" class="screen">
+            <div class="mobile-panel result-panel">
+                <div id="resultIcon">🏆</div>
+                <h1 id="resultTitle">CONGRATULATIONS!</h1>
+                <p id="resultMessage">YOU WIN!</p>
+
+                <div id="resultRewards" class="reward-grid"></div>
+
+                <div class="rank-box">
+                    <small>YOUR CURRENT RANK</small>
+                    <h2 id="resultRank">BEGINNERS</h2>
+                    <p id="rankProgress">0 / 200 POINTS</p>
+                    <div class="progress-track">
+                        <div id="rankProgressBar"></div>
+                    </div>
+                    <p id="nextRankMessage"></p>
+                </div>
+
+                <button class="primary-btn" onclick="showCategories()">PLAY AGAIN</button>
+                <button class="secondary-btn" onclick="goMainMenu()">MAIN MENU</button>
+            </div>
+        </section>
+
+        <!-- SHOP -->
+        <section id="shopScreen" class="screen">
+            <div class="mobile-panel">
+                <button class="back-btn" onclick="showScreen('mainMenu')">← BACK</button>
+                <h2>🛒 GAME SHOP</h2>
+                <p class="muted">Use diamonds to get rewards.</p>
+
+                <div class="shop-balance">
+                    💎 YOUR DIAMONDS: <b id="shopDiamonds">10</b>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-icon">💡</div>
+                    <div class="shop-details">
+                        <h3>HINTS</h3>
+                        <p>5 Hints per purchase</p>
+                        <strong>💎 25 DIAMONDS</strong>
+                    </div>
+                    <button class="buy-btn" onclick="buyHints()">BUY</button>
+                </div>
+
+                <div class="shop-item locked-item">
+                    <div class="shop-icon">🎨</div>
+                    <div class="shop-details">
+                        <h3>CARD SKINS</h3>
+                        <p>Customize your cards</p>
+                        <strong>COMING SOON</strong>
+                    </div>
+                    <span>🔒</span>
+                </div>
+                                <div class="shop-item locked-item">
+                    <div class="shop-icon">🂡</div>
+                    <div class="shop-details">
+                        <h3>Cards Customization</h3>
+                        <p>Skin your own back cards</p>
+                        <strong>COMING SOON</strong>
+                    </div>
+                    <SPAN>🔒</SPAN>
+
+                <p id="shopMessage" class="small-message"></p>
+            </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="settingsScreen" class="screen">
+            <div class="mobile-panel">
+                <button class="back-btn" onclick="showScreen('mainMenu')">← BACK</button>
+                <h2>⚙️ SETTINGS</h2>
+                <p class="muted">Customize your game experience.</p>
+
+                <div class="settings-item">
+                    <div class="settings-heading">
+                        <span>🎵 Main Menu & Game Music</span>
+                        <b id="volumeValue">35%</b>
+                    </div>
+
+                    <input type="range" id="volumeSlider" min="0" max="100" value="35">
+
+                    <div class="volume-labels">
+                        <small>0%</small>
+                        <small>100%</small>
+                    </div>
+                </div>
+
+                <button class="secondary-btn" onclick="toggleMusic()">
+                    <span id="musicToggleText">🔊 MUSIC ON</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+<!-- PLAYER NAME SCREEN -->
+<div id="playerNameScreen" class="name-screen">
+
+    <div class="name-box">
+
+        <h1>WELCOME, PLAYER!</h1>
+
+        <p>Please enter your name to continue.</p>
+
+        <input
+            type="text"
+            id="playerName"
+            placeholder="Enter your name..."
+            maxlength="20"
+        >
+
+        <button id="continueBtn">
+            CONTINUE
+        </button>
+
+    </div>
+
+</div>
+
+<!-- MUSIC -->
+<audio id="backgroundMusic" src="music/Background1.mp3" loop></audio>
+
+<audio id="victoryMusic" src="music/VictoryMusic1.mp3"></audio>
+<audio id="defeatMusic" src="music/Lose1.mp3"></audio>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
